@@ -9,7 +9,7 @@
     <string name="help">Aide</string>
     <string name="more">Plus</string>
     <string name="share">Partager</string>
-    <string name="clear">Effacer l'écran</string>
+    <string name="clear">Effacer l\'écran</string>
     <string name="add">Ajouter</string>
     <string name="delete">Supprimer</string>
     <string name="edit">Modifier</string>
@@ -21,7 +21,7 @@
 
     <string name="delete_confirm">Êtes-vous sûr de vouloir supprimer cet élément ?</string>
 
-    <string name="snackbar_intent_failed">Impossible de lancer l'intent</string>
+    <string name="snackbar_intent_failed">Impossible de lancer l\'intent</string>
 
     <string name="developer_url">https://www.github.com/tytydraco</string>
     <string name="source_url">https://www.github.com/tytydraco/LADB</string>
@@ -32,11 +32,11 @@
     <string name="paired_key">paired</string>
     <string name="port_hint">Port</string>
 
-    <string name="code_hint">Code d'association</string>
+    <string name="code_hint">Code d\'association</string>
 
-    <string name="pair_title">Informations d'association</string>
-    <string name="pair_message">Vous devez connecter cet appareil à LADB à l'aide d'un code d'association depuis la page \"Débogage
-        sans fil\" dans les Paramètres développeur. Si vous ne l'avez jamais fait auparavant, cliquez sur \"Aide\"
+    <string name="pair_title">Informations d\'association</string>
+    <string name="pair_message">Vous devez connecter cet appareil à LADB à l\'aide d\'un code d\'association depuis la page \"Débogage
+        sans fil\" dans les Paramètres développeur. Si vous ne l\'avez jamais fait auparavant, cliquez sur \"Aide\"
         pour consulter le tutoriel.
     </string>
 
@@ -45,7 +45,7 @@
     <string name="about">À propos</string>
 
     <string name="unpair_title">Dissocier</string>
-    <string name="unpair_summary">Efface toutes les informations d'association existantes.</string>
+    <string name="unpair_summary">Efface toutes les informations d\'association existantes.</string>
     <string name="unpair_key">unpair</string>
 
     <string name="restart_title">Redémarrer</string>
@@ -59,8 +59,8 @@
     <string name="auto_shell_key">auto_shell</string>
 
     <string name="buffer_size_title">Taille du tampon</string>
-    <string name="buffer_size_summary">Taille du tampon de sortie de l'écran. Augmenter cette valeur affichera davantage
-        de contenu à l'écran en une seule fois, au détriment des performances. (Par défaut : 16384)
+    <string name="buffer_size_summary">Taille du tampon de sortie de l\'écran. Augmenter cette valeur affichera davantage
+        de contenu à l\'écran en une seule fois, au détriment des performances. (Par défaut : 16384)
     </string>
     <string name="buffer_size_key">buffer_size</string>
 
@@ -73,15 +73,15 @@
     <string name="tutorial_key">tutorial</string>
 
     <string name="error_waiting_title">Bloqué sur \"En attente\"</string>
-    <string name="error_waiting_summary">Vous avez peut-être saisi les informations d'association de manière incorrecte,
-        ou votre appareil n'est pas détecté. Vérifiez d'abord que le Débogage sans fil est bien activé. Si cela ne
-        fonctionne pas, essayez l'option \"Réinitialisation d'usine\" dans LADB afin de tenter une nouvelle association.
+    <string name="error_waiting_summary">Vous avez peut-être saisi les informations d\'association de manière incorrecte,
+        ou votre appareil n\'est pas détecté. Vérifiez d\'abord que le Débogage sans fil est bien activé. Si cela ne
+        fonctionne pas, essayez l\'option \"Réinitialisation d\'usine\" dans LADB afin de tenter une nouvelle association.
     </string>
 
     <string name="error_no_wireless_debugging_title">Aucune option \"Débogage sans fil\"</string>
     <string name="error_no_wireless_debugging_summary">Votre appareil ne prend pas en charge nativement le Débogage sans
         fil, pourtant requis par LADB. Vous pouvez également utiliser un PC pour activer cette fonctionnalité, même sur
-        les appareils non pris en charge. Elle restera active jusqu'au prochain redémarrage. Connectez l'appareil à un
+        les appareils non pris en charge. Elle restera active jusqu\'au prochain redémarrage. Connectez l\'appareil à un
         PC puis saisissez : adb tcpip 5555
     </string>
 
@@ -94,7 +94,7 @@
     <string name="source_key">source</string>
 
     <string name="contact_title">Contact</string>
-    <string name="contact_summary">Envoyez-moi un e-mail pour obtenir de l'aide</string>
+    <string name="contact_summary">Envoyez-moi un e-mail pour obtenir de l\'aide</string>
     <string name="contact_key">contact</string>
 
     <string name="licenses_title">Licences</string>
