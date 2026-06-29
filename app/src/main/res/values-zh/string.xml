@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">LADB</string>
+
+    <string name="command_hint">Shell 命令</string>
+    <string name="command_hint_waiting">正在等待连接…</string>
+
+    <string name="bookmarks">书签</string>
+    <string name="last_command">上一个命令</string>
+    <string name="help">帮助</string>
+    <string name="more">更多</string>
+    <string name="share">分享</string>
+    <string name="clear">清除屏幕</string>
+    <string name="add">添加</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="cancel">取消</string>
+    <string name="done">完成</string>
+    <string name="pair">配对</string>
+    <string name="skip">跳过</string>
+    <string name="dismiss">关闭</string>
+
+    <string name="delete_confirm">您确定要删除此项吗？</string>
+
+    <string name="snackbar_intent_failed">无法启动 Intent</string>
+
+    <string name="developer_url">https://www.github.com/tytydraco</string>
+    <string name="source_url">https://www.github.com/tytydraco/LADB</string>
+    <string name="contact_url">mailto:tnnijmeh@gmail.com</string>
+    <string name="tutorial_url">https://www.xda-developers.com/debloat-your-phone-run-adb-shell-commands-no-root-no-pc
+    </string>
+
+    <string name="paired_key">paired</string>
+    <string name="port_hint">端口</string>
+
+    <string name="code_hint">配对码</string>
+
+    <string name="pair_title">配对信息</string>
+    <string name="pair_message">您必须使用开发者设置中\"无线调试\"页面提供的配对码将此设备连接到 LADB。如果您之前从未执行过此操作，请点击\"帮助\"查看教程。
+    </string>
+
+    <string name="settings">设置</string>
+    <string name="troubleshooting">故障排除</string>
+    <string name="about">关于</string>
+
+    <string name="unpair_title">取消配对</string>
+    <string name="unpair_summary">删除所有现有的配对信息。</string>
+    <string name="unpair_key">unpair</string>
+
+    <string name="restart_title">重新启动</string>
+    <string name="restart_summary">重新启动 ADB 服务器以应用更改后的设置</string>
+    <string name="restart_key">restart</string>
+
+    <string name="auto_shell_title">配对 &amp; Shell</string>
+    <string name="auto_shell_summary">自动进入 ADB Shell；禁用此选项可在无需配对的情况下进入普通 Shell
+    </string>
+    <string name="auto_shell_key">auto_shell</string>
+
+    <string name="buffer_size_title">缓冲区大小</string>
+    <string name="buffer_size_summary">屏幕输出缓冲区的大小。增加此值可一次显示更多输出内容，但会降低性能。（默认值：16384）
+    </string>
+    <string name="buffer_size_key">buffer_size</string>
+
+    <string name="startup_command_title">启动命令</string>
+    <string name="startup_command_summary">Shell 启动后自动执行的命令</string>
+    <string name="startup_command_key">startup_command</string>
+
+    <string name="tutorial_title">教程</string>
+    <string name="tutorial_summary">查看 XDA Developers 页面上的教程</string>
+    <string name="tutorial_key">tutorial</string>
+
+    <string name="error_waiting_title">卡在\"等待\"状态</string>
+    <string name="error_waiting_summary">您输入的配对信息可能有误，或者设备未被检测到。请先确认已启用无线调试。如果仍然无法连接，请尝试在 LADB 中使用\"恢复出厂设置\"选项后重新进行配对。
+    </string>
+
+    <string name="error_no_wireless_debugging_title">没有\"无线调试\"开关</string>
+    <string name="error_no_wireless_debugging_summary">您的设备原生不支持无线调试，而这是 LADB 所必需的。您也可以使用电脑启用此功能，即使设备本身不受支持。该设置将在下一次重启前保持有效。将设备连接到电脑，然后输入：adb tcpip 5555
+    </string>
+
+    <string name="developer_title">开发者</string>
+    <string name="developer_summary">Tyler Nijmeh</string>
+    <string name="developer_key">developer</string>
+
+    <string name="source_title">源代码</string>
+    <string name="source_summary">在 GitHub 上查看源代码</string>
+    <string name="source_key">source</string>
+
+    <string name="contact_title">联系</string>
+    <string name="contact_summary">通过电子邮件联系我以获取帮助</string>
+    <string name="contact_key">contact</string>
+
+    <string name="licenses_title">许可证</string>
+    <string name="licenses_summary">查看开源许可证</string>
+    <string name="licenses_key">licenses</string>
+
+    <string name="pref_key_verified" translatable="false">verified</string>
+</resources>

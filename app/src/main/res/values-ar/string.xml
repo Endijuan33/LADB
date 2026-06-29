@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">LADB</string>
+
+    <string name="command_hint">أمر الشِل</string>
+    <string name="command_hint_waiting">في انتظار الاتصال…</string>
+
+    <string name="bookmarks">الإشارات المرجعية</string>
+    <string name="last_command">آخر أمر</string>
+    <string name="help">المساعدة</string>
+    <string name="more">المزيد</string>
+    <string name="share">مشاركة</string>
+    <string name="clear">مسح الشاشة</string>
+    <string name="add">إضافة</string>
+    <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
+    <string name="cancel">إلغاء</string>
+    <string name="done">تم</string>
+    <string name="pair">إقران</string>
+    <string name="skip">تخطي</string>
+    <string name="dismiss">إغلاق</string>
+
+    <string name="delete_confirm">هل أنت متأكد من أنك تريد حذف هذا؟</string>
+
+    <string name="snackbar_intent_failed">تعذر بدء الـ Intent</string>
+
+    <string name="developer_url">https://www.github.com/tytydraco</string>
+    <string name="source_url">https://www.github.com/tytydraco/LADB</string>
+    <string name="contact_url">mailto:tnnijmeh@gmail.com</string>
+    <string name="tutorial_url">https://www.xda-developers.com/debloat-your-phone-run-adb-shell-commands-no-root-no-pc
+    </string>
+
+    <string name="paired_key">paired</string>
+    <string name="port_hint">المنفذ</string>
+
+    <string name="code_hint">رمز الإقران</string>
+
+    <string name="pair_title">معلومات الإقران</string>
+    <string name="pair_message">يجب عليك توصيل هذا الجهاز بتطبيق LADB باستخدام رمز الإقران الموجود في صفحة \"تصحيح الأخطاء اللاسلكي\" ضمن إعدادات المطور. إذا لم تقم بذلك من قبل، فانقر على \"المساعدة\" لعرض البرنامج التعليمي.
+    </string>
+
+    <string name="settings">الإعدادات</string>
+    <string name="troubleshooting">استكشاف الأخطاء وإصلاحها</string>
+    <string name="about">حول</string>
+
+    <string name="unpair_title">إلغاء الإقران</string>
+    <string name="unpair_summary">حذف جميع معلومات الإقران الحالية.</string>
+    <string name="unpair_key">unpair</string>
+
+    <string name="restart_title">إعادة التشغيل</string>
+    <string name="restart_summary">أعد تشغيل خادم ADB لتطبيق الإعدادات المعدلة</string>
+    <string name="restart_key">restart</string>
+
+    <string name="auto_shell_title">إقران &amp; شِل</string>
+    <string name="auto_shell_summary">الدخول تلقائيًا إلى ADB Shell؛ عطّل هذا الخيار للدخول إلى Shell عادي بدون إقران
+    </string>
+    <string name="auto_shell_key">auto_shell</string>
+
+    <string name="buffer_size_title">حجم المخزن المؤقت</string>
+    <string name="buffer_size_summary">حجم مخزن إخراج الشاشة. سيؤدي زيادة هذه القيمة إلى عرض المزيد من المخرجات على الشاشة في وقت واحد، ولكن على حساب الأداء. (الافتراضي: 16384)
+    </string>
+    <string name="buffer_size_key">buffer_size</string>
+
+    <string name="startup_command_title">أمر بدء التشغيل</string>
+    <string name="startup_command_summary">الأمر الذي سيتم تشغيله بعد بدء الـ Shell</string>
+    <string name="startup_command_key">startup_command</string>
+
+    <string name="tutorial_title">البرنامج التعليمي</string>
+    <string name="tutorial_summary">عرض البرنامج التعليمي من صفحة XDA Developers</string>
+    <string name="tutorial_key">tutorial</string>
+
+    <string name="error_waiting_title">عالق عند \"في انتظار\"</string>
+    <string name="error_waiting_summary">إما أنك أدخلت معلومات الإقران بشكل غير صحيح، أو أن جهازك لم يتم اكتشافه. أولاً، تأكد من أن ميزة \"تصحيح الأخطاء اللاسلكي\" مفعلة بالفعل. إذا لم ينجح ذلك، فجرب خيار \"إعادة ضبط المصنع\" في LADB لمحاولة الإقران مرة أخرى.
+    </string>
+
+    <string name="error_no_wireless_debugging_title">لا يوجد خيار \"تصحيح الأخطاء اللاسلكي\"</string>
+    <string name="error_no_wireless_debugging_summary">جهازك لا يدعم ميزة \"تصحيح الأخطاء اللاسلكي\" بشكل أصلي، وهي مطلوبة لاستخدام LADB. كبديل، يمكنك استخدام جهاز كمبيوتر لتفعيل هذه الميزة حتى على الأجهزة غير المدعومة. ستظل الميزة مفعلة حتى إعادة التشغيل التالية. قم بتوصيل الجهاز بجهاز الكمبيوتر ثم اكتب: adb tcpip 5555
+    </string>
+
+    <string name="developer_title">المطور</string>
+    <string name="developer_summary">Tyler Nijmeh</string>
+    <string name="developer_key">developer</string>
+
+    <string name="source_title">الكود المصدري</string>
+    <string name="source_summary">عرض الكود المصدري على GitHub</string>
+    <string name="source_key">source</string>
+
+    <string name="contact_title">التواصل</string>
+    <string name="contact_summary">راسلني عبر البريد الإلكتروني للحصول على المساعدة</string>
+    <string name="contact_key">contact</string>
+
+    <string name="licenses_title">التراخيص</string>
+    <string name="licenses_summary">عرض تراخيص المصادر المفتوحة</string>
+    <string name="licenses_key">licenses</string>
+
+    <string name="pref_key_verified" translatable="false">verified</string>
+</resources>

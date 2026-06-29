@@ -1,0 +1,105 @@
+<resources>
+    <string name="app_name">LADB</string>
+
+    <string name="command_hint">Perintah shell</string>
+    <string name="command_hint_waiting">Menunggu koneksi…</string>
+
+    <string name="bookmarks">Bookmark</string>
+    <string name="last_command">Perintah terakhir</string>
+    <string name="help">Bantuan</string>
+    <string name="more">Lainnya</string>
+    <string name="share">Bagikan</string>
+    <string name="clear">Bersihkan layar</string>
+    <string name="add">Tambah</string>
+    <string name="delete">Hapus</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Batal</string>
+    <string name="done">Selesai</string>
+    <string name="pair">Pasangkan</string>
+    <string name="skip">Lewati</string>
+    <string name="dismiss">Tutup</string>
+
+    <string name="delete_confirm">Apakah Anda yakin ingin menghapus ini?</string>
+
+    <string name="snackbar_intent_failed">Gagal memulai intent</string>
+
+    <string name="developer_url">https://www.github.com/tytydraco</string>
+    <string name="source_url">https://www.github.com/tytydraco/LADB</string>
+    <string name="contact_url">mailto:tnnijmeh@gmail.com</string>
+    <string name="tutorial_url">https://www.xda-developers.com/debloat-your-phone-run-adb-shell-commands-no-root-no-pc
+    </string>
+
+    <string name="paired_key">paired</string>
+    <string name="port_hint">Port</string>
+
+    <string name="code_hint">Kode pemasangan</string>
+
+    <string name="pair_title">Informasi pemasangan</string>
+    <string name="pair_message">Anda harus menghubungkan perangkat ini ke LADB menggunakan kode pemasangan dari halaman \"Debugging
+        nirkabel\" di halaman Pengaturan Pengembang. Jika Anda belum pernah melakukannya sebelumnya, klik \"Bantuan\"
+        untuk melihat tutorial.
+    </string>
+
+    <string name="settings">Pengaturan</string>
+    <string name="troubleshooting">Pemecahan masalah</string>
+    <string name="about">Tentang</string>
+
+    <string name="unpair_title">Batalkan pemasangan</string>
+    <string name="unpair_summary">Menghapus semua informasi pemasangan yang ada.</string>
+    <string name="unpair_key">unpair</string>
+
+    <string name="restart_title">Mulai ulang</string>
+    <string name="restart_summary">Mulai ulang server ADB untuk menerapkan perubahan pengaturan</string>
+    <string name="restart_key">restart</string>
+
+    <string name="auto_shell_title">Pasangkan &amp; shell</string>
+    <string name="auto_shell_summary">Masuk ke shell ADB secara otomatis; nonaktifkan untuk masuk ke shell biasa tanpa
+        pemasangan
+    </string>
+    <string name="auto_shell_key">auto_shell</string>
+
+    <string name="buffer_size_title">Ukuran buffer</string>
+    <string name="buffer_size_summary">Ukuran buffer keluaran layar. Meningkatkan nilai ini akan menampilkan lebih banyak
+        keluaran di layar sekaligus, tetapi dapat mengurangi performa. (Bawaan: 16384)
+    </string>
+    <string name="buffer_size_key">buffer_size</string>
+
+    <string name="startup_command_title">Perintah saat mulai</string>
+    <string name="startup_command_summary">Perintah yang akan dijalankan setelah shell dimulai</string>
+    <string name="startup_command_key">startup_command</string>
+
+    <string name="tutorial_title">Tutorial</string>
+    <string name="tutorial_summary">Lihat tutorial dari halaman XDA Developers</string>
+    <string name="tutorial_key">tutorial</string>
+
+    <string name="error_waiting_title">Terjebak di \"Menunggu\"</string>
+    <string name="error_waiting_summary">Anda mungkin memasukkan informasi pemasangan dengan salah, atau perangkat Anda
+        tidak terdeteksi. Pastikan terlebih dahulu bahwa Debugging Nirkabel benar-benar telah diaktifkan. Jika masih
+        tidak berhasil, coba gunakan pengaturan \"Reset pabrik\" di LADB untuk mencoba memasangkan kembali.
+    </string>
+
+    <string name="error_no_wireless_debugging_title">Tidak ada tombol \"Debugging Nirkabel\"</string>
+    <string name="error_no_wireless_debugging_summary">Perangkat Anda tidak mendukung Debugging Nirkabel secara bawaan,
+        yang merupakan persyaratan untuk menggunakan LADB. Sebagai alternatif, Anda dapat menggunakan PC untuk
+        mengaktifkan fitur ini, bahkan pada perangkat yang tidak didukung. Fitur ini akan tetap aktif hingga perangkat
+        dihidupkan ulang. Hubungkan perangkat ke PC lalu ketik: adb tcpip 5555
+    </string>
+
+    <string name="developer_title">Pengembang</string>
+    <string name="developer_summary">Tyler Nijmeh</string>
+    <string name="developer_key">developer</string>
+
+    <string name="source_title">Kode sumber</string>
+    <string name="source_summary">Lihat kode sumber di GitHub</string>
+    <string name="source_key">source</string>
+
+    <string name="contact_title">Kontak</string>
+    <string name="contact_summary">Kirim email kepada saya untuk mendapatkan bantuan</string>
+    <string name="contact_key">contact</string>
+
+    <string name="licenses_title">Lisensi</string>
+    <string name="licenses_summary">Lihat lisensi sumber terbuka</string>
+    <string name="licenses_key">licenses</string>
+
+    <string name="pref_key_verified" translatable="false">verified</string>
+</resources>

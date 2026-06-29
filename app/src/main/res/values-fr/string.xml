@@ -1,0 +1,105 @@
+<resources>
+    <string name="app_name">LADB</string>
+
+    <string name="command_hint">Commande shell</string>
+    <string name="command_hint_waiting">En attente de connexion…</string>
+
+    <string name="bookmarks">Favoris</string>
+    <string name="last_command">Dernière commande</string>
+    <string name="help">Aide</string>
+    <string name="more">Plus</string>
+    <string name="share">Partager</string>
+    <string name="clear">Effacer l'écran</string>
+    <string name="add">Ajouter</string>
+    <string name="delete">Supprimer</string>
+    <string name="edit">Modifier</string>
+    <string name="cancel">Annuler</string>
+    <string name="done">Terminé</string>
+    <string name="pair">Associer</string>
+    <string name="skip">Ignorer</string>
+    <string name="dismiss">Fermer</string>
+
+    <string name="delete_confirm">Êtes-vous sûr de vouloir supprimer cet élément ?</string>
+
+    <string name="snackbar_intent_failed">Impossible de lancer l'intent</string>
+
+    <string name="developer_url">https://www.github.com/tytydraco</string>
+    <string name="source_url">https://www.github.com/tytydraco/LADB</string>
+    <string name="contact_url">mailto:tnnijmeh@gmail.com</string>
+    <string name="tutorial_url">https://www.xda-developers.com/debloat-your-phone-run-adb-shell-commands-no-root-no-pc
+    </string>
+
+    <string name="paired_key">paired</string>
+    <string name="port_hint">Port</string>
+
+    <string name="code_hint">Code d'association</string>
+
+    <string name="pair_title">Informations d'association</string>
+    <string name="pair_message">Vous devez connecter cet appareil à LADB à l'aide d'un code d'association depuis la page \"Débogage
+        sans fil\" dans les Paramètres développeur. Si vous ne l'avez jamais fait auparavant, cliquez sur \"Aide\"
+        pour consulter le tutoriel.
+    </string>
+
+    <string name="settings">Paramètres</string>
+    <string name="troubleshooting">Dépannage</string>
+    <string name="about">À propos</string>
+
+    <string name="unpair_title">Dissocier</string>
+    <string name="unpair_summary">Efface toutes les informations d'association existantes.</string>
+    <string name="unpair_key">unpair</string>
+
+    <string name="restart_title">Redémarrer</string>
+    <string name="restart_summary">Redémarrer le serveur ADB pour appliquer les modifications des paramètres</string>
+    <string name="restart_key">restart</string>
+
+    <string name="auto_shell_title">Associer &amp; shell</string>
+    <string name="auto_shell_summary">Entrer automatiquement dans un shell ADB ; désactivez cette option pour accéder à un
+        shell normal sans association
+    </string>
+    <string name="auto_shell_key">auto_shell</string>
+
+    <string name="buffer_size_title">Taille du tampon</string>
+    <string name="buffer_size_summary">Taille du tampon de sortie de l'écran. Augmenter cette valeur affichera davantage
+        de contenu à l'écran en une seule fois, au détriment des performances. (Par défaut : 16384)
+    </string>
+    <string name="buffer_size_key">buffer_size</string>
+
+    <string name="startup_command_title">Commande de démarrage</string>
+    <string name="startup_command_summary">Commande à exécuter une fois le shell démarré</string>
+    <string name="startup_command_key">startup_command</string>
+
+    <string name="tutorial_title">Tutoriel</string>
+    <string name="tutorial_summary">Consulter le tutoriel sur la page XDA Developers</string>
+    <string name="tutorial_key">tutorial</string>
+
+    <string name="error_waiting_title">Bloqué sur \"En attente\"</string>
+    <string name="error_waiting_summary">Vous avez peut-être saisi les informations d'association de manière incorrecte,
+        ou votre appareil n'est pas détecté. Vérifiez d'abord que le Débogage sans fil est bien activé. Si cela ne
+        fonctionne pas, essayez l'option \"Réinitialisation d'usine\" dans LADB afin de tenter une nouvelle association.
+    </string>
+
+    <string name="error_no_wireless_debugging_title">Aucune option \"Débogage sans fil\"</string>
+    <string name="error_no_wireless_debugging_summary">Votre appareil ne prend pas en charge nativement le Débogage sans
+        fil, pourtant requis par LADB. Vous pouvez également utiliser un PC pour activer cette fonctionnalité, même sur
+        les appareils non pris en charge. Elle restera active jusqu'au prochain redémarrage. Connectez l'appareil à un
+        PC puis saisissez : adb tcpip 5555
+    </string>
+
+    <string name="developer_title">Développeur</string>
+    <string name="developer_summary">Tyler Nijmeh</string>
+    <string name="developer_key">developer</string>
+
+    <string name="source_title">Code source</string>
+    <string name="source_summary">Voir le code source sur GitHub</string>
+    <string name="source_key">source</string>
+
+    <string name="contact_title">Contact</string>
+    <string name="contact_summary">Envoyez-moi un e-mail pour obtenir de l'aide</string>
+    <string name="contact_key">contact</string>
+
+    <string name="licenses_title">Licences</string>
+    <string name="licenses_summary">Voir les licences open source</string>
+    <string name="licenses_key">licenses</string>
+
+    <string name="pref_key_verified" translatable="false">verified</string>
+</resources>

@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">LADB</string>
+
+    <string name="command_hint">Comando de shell</string>
+    <string name="command_hint_waiting">Esperando conexión…</string>
+
+    <string name="bookmarks">Marcadores</string>
+    <string name="last_command">Último comando</string>
+    <string name="help">Ayuda</string>
+    <string name="more">Más</string>
+    <string name="share">Compartir</string>
+    <string name="clear">Limpiar pantalla</string>
+    <string name="add">Agregar</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="done">Listo</string>
+    <string name="pair">Emparejar</string>
+    <string name="skip">Omitir</string>
+    <string name="dismiss">Descartar</string>
+
+    <string name="delete_confirm">¿Está seguro de que desea eliminar esto?</string>
+
+    <string name="snackbar_intent_failed">No se pudo iniciar el intent</string>
+
+    <string name="developer_url">https://www.github.com/tytydraco</string>
+    <string name="source_url">https://www.github.com/tytydraco/LADB</string>
+    <string name="contact_url">mailto:tnnijmeh@gmail.com</string>
+    <string name="tutorial_url">https://www.xda-developers.com/debloat-your-phone-run-adb-shell-commands-no-root-no-pc
+    </string>
+
+    <string name="paired_key">paired</string>
+    <string name="port_hint">Puerto</string>
+
+    <string name="code_hint">Código de emparejamiento</string>
+
+    <string name="pair_title">Información de emparejamiento</string>
+    <string name="pair_message">Debe conectar este dispositivo a LADB utilizando un código de emparejamiento desde la página \"Depuración
+        inalámbrica\" en la página de Configuración para desarrolladores. Si nunca lo ha hecho antes, haga clic en
+        \"Ayuda\" para ver un tutorial.
+    </string>
+
+    <string name="settings">Configuración</string>
+    <string name="troubleshooting">Solución de problemas</string>
+    <string name="about">Acerca de</string>
+
+    <string name="unpair_title">Desemparejar</string>
+    <string name="unpair_summary">Borra toda la información de emparejamiento existente.</string>
+    <string name="unpair_key">unpair</string>
+
+    <string name="restart_title">Reiniciar</string>
+    <string name="restart_summary">Reinicie el servidor ADB para aplicar los cambios de configuración</string>
+    <string name="restart_key">restart</string>
+
+    <string name="auto_shell_title">Emparejar &amp; shell</string>
+    <string name="auto_shell_summary">Entrar automáticamente en un shell ADB; desactívelo para acceder a un shell normal
+        sin emparejamiento
+    </string>
+    <string name="auto_shell_key">auto_shell</string>
+
+    <string name="buffer_size_title">Tamaño del búfer</string>
+    <string name="buffer_size_summary">El tamaño del búfer de salida de la pantalla. Aumentar este valor mostrará más
+        salida en la pantalla al mismo tiempo, a costa del rendimiento. (Predeterminado: 16384)
+    </string>
+    <string name="buffer_size_key">buffer_size</string>
+
+    <string name="startup_command_title">Comando de inicio</string>
+    <string name="startup_command_summary">El comando que se ejecutará una vez que se haya iniciado el shell</string>
+    <string name="startup_command_key">startup_command</string>
+
+    <string name="tutorial_title">Tutorial</string>
+    <string name="tutorial_summary">Ver el tutorial de la página de XDA Developers</string>
+    <string name="tutorial_key">tutorial</string>
+
+    <string name="error_waiting_title">Atascado en \"Esperando\"</string>
+    <string name="error_waiting_summary">Puede que haya introducido la información de emparejamiento incorrectamente o
+        que su dispositivo no esté siendo detectado. Primero, asegúrese de que la Depuración inalámbrica esté realmente
+        habilitada. Si eso no funciona, pruebe la opción \"Restablecimiento de fábrica\" en LADB para intentar emparejar
+        nuevamente.
+    </string>
+
+    <string name="error_no_wireless_debugging_title">No existe el interruptor \"Depuración inalámbrica\"</string>
+    <string name="error_no_wireless_debugging_summary">Su dispositivo no admite de forma nativa la Depuración inalámbrica,
+        la cual es requerida por LADB. Como alternativa, puede utilizar un PC para habilitar esta función, incluso en
+        dispositivos no compatibles. Permanecerá habilitada hasta el próximo reinicio. Conecte el dispositivo a un PC y
+        escriba: adb tcpip 5555
+    </string>
+
+    <string name="developer_title">Desarrollador</string>
+    <string name="developer_summary">Tyler Nijmeh</string>
+    <string name="developer_key">developer</string>
+
+    <string name="source_title">Código fuente</string>
+    <string name="source_summary">Ver el código fuente en GitHub</string>
+    <string name="source_key">source</string>
+
+    <string name="contact_title">Contacto</string>
+    <string name="contact_summary">Envíeme un correo electrónico para recibir ayuda</string>
+    <string name="contact_key">contact</string>
+
+    <string name="licenses_title">Licencias</string>
+    <string name="licenses_summary">Ver las licencias de código abierto</string>
+    <string name="licenses_key">licenses</string>
+
+    <string name="pref_key_verified" translatable="false">verified</string>
+</resources>
