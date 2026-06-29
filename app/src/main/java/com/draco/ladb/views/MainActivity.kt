@@ -23,6 +23,7 @@ import androidx.preference.PreferenceManager
 import com.draco.ladb.BuildConfig
 import com.draco.ladb.R
 import com.draco.ladb.databinding.ActivityMainBinding
+import com.draco.ladb.utils.DnsDiscover
 import com.draco.ladb.viewmodels.MainActivityViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -182,17 +183,32 @@ class MainActivity : AppCompatActivity() {
             .create()
             .apply {
                 setOnShowListener {
-                    getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                        val port = findViewById<TextInputEditText>(R.id.port)!!.text.toString()
-                        val code = findViewById<TextInputEditText>(R.id.code)!!.text.toString()
-                        dismiss()
+		    getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
 
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            viewModel.adb.debug("Trying to pair...")
-                            val success = viewModel.adb.pair(port, code)
-                            callback?.invoke(success)
-                        }
-                    }
+    val port = DnsDiscover.adbPort?.toString()
+
+    if (port == null) {
+        Snackbar.make(
+            binding.output,
+            "Searching Wireless Debugging port...",
+            Snackbar.LENGTH_SHORT
+        ).show()
+        return@setOnClickListener
+    }
+
+    val code =
+        findViewById<TextInputEditText>(R.id.code)!!
+            .text
+            .toString()
+
+    dismiss()
+
+    lifecycleScope.launch(Dispatchers.IO) {
+        viewModel.adb.debug("Trying to pair on port $port...")
+        val success = viewModel.adb.pair(port, code)
+        callback?.invoke(success)
+    }
+}
 
                     getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.tutorial_url)))
