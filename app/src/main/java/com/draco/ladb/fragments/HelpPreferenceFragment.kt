@@ -8,6 +8,7 @@ import androidx.core.content.edit
 import androidx.preference.*
 import com.draco.ladb.R
 import com.draco.ladb.utils.ADB
+import com.draco.ladb.utils.LanguageManager
 import com.draco.ladb.views.MainActivity
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -15,15 +16,32 @@ import com.google.android.material.snackbar.Snackbar
 import kotlin.system.exitProcess
 
 class HelpPreferenceFragment : PreferenceFragmentCompat() {
+
     private lateinit var adb: ADB
+    private lateinit var languagePreference: Preference
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         adb = ADB.getInstance(context)
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?
+    ) {
+
         setPreferencesFromResource(R.xml.help, rootKey)
+
+        languagePreference = requireNotNull(
+            findPreference(getString(R.string.language_key))
+    )
+
+        updateLanguageSummary()
+
+        languagePreference.setOnPreferenceClickListener {
+            showLanguageDialog()
+            true
+        }
     }
 
     private fun restartApp() {
@@ -33,29 +51,99 @@ class HelpPreferenceFragment : PreferenceFragmentCompat() {
         exitProcess(0)
     }
 
-    override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        when (preference.key) {
-            getString(R.string.unpair_key) -> {
-                val context = requireContext()
-                PreferenceManager.getDefaultSharedPreferences(context).edit(commit = true) {
-                    putBoolean(context.getString(R.string.paired_key), false)
+    private fun updateLanguageSummary() {
+        languagePreference.summary =
+            LanguageManager.getCurrentLanguageName(requireContext())
+    }
+
+    private fun showLanguageDialog() {
+
+        val languages = LanguageManager.getLanguages()
+
+        val items = languages.map {
+            getString(it.label)
+        }.toTypedArray()
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.language_title)
+            .setSingleChoiceItems(
+                items,
+                LanguageManager.getCurrentIndex()
+            ) { dialog, which ->
+
+                if (which == LanguageManager.getCurrentIndex()) {
+                    dialog.dismiss()
+                    return@setSingleChoiceItems
                 }
+
+                LanguageManager.applyLanguage(which)
+
+                updateLanguageSummary()
+
+                dialog.dismiss()
+
+                restartApp()
+            }
+            .setNegativeButton(
+                android.R.string.cancel,
+                null
+            )
+            .show()
+    }
+
+    override fun onPreferenceTreeClick(
+        preference: Preference
+    ): Boolean {
+
+        when (preference.key) {
+
+            getString(R.string.unpair_key) -> {
+
+                val context = requireContext()
+
+                PreferenceManager
+                    .getDefaultSharedPreferences(context)
+                    .edit(commit = true) {
+
+                        putBoolean(
+                            context.getString(R.string.paired_key),
+                            false
+                        )
+                    }
+
                 restartApp()
             }
 
-            getString(R.string.restart_key) -> restartApp()
-            getString(R.string.tutorial_key) -> openURL(getString(R.string.tutorial_url))
+            getString(R.string.restart_key) ->
+                restartApp()
 
-            getString(R.string.developer_key) -> openURL(getString(R.string.developer_url))
-            getString(R.string.source_key) -> openURL(getString(R.string.source_url))
-            getString(R.string.contact_key) -> openURL(getString(R.string.contact_url))
+            getString(R.string.tutorial_key) ->
+                openURL(getString(R.string.tutorial_url))
+
+            getString(R.string.developer_key) ->
+                openURL(getString(R.string.developer_url))
+
+            getString(R.string.source_key) ->
+                openURL(getString(R.string.source_url))
+
+            getString(R.string.contact_key) ->
+                openURL(getString(R.string.contact_url))
+
             getString(R.string.licenses_key) -> {
-                val intent = Intent(requireContext(), OssLicensesMenuActivity::class.java)
+
+                val intent = Intent(
+                    requireContext(),
+                    OssLicensesMenuActivity::class.java
+                )
+
                 startActivity(intent)
             }
 
             else -> {
-                if (preference !is SwitchPreference && preference !is EditTextPreference) {
+                if (preference !is SwitchPreference &&
+                    preference !is EditTextPreference
+                ) {
+
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(preference.title)
                         .setMessage(preference.summary)
@@ -68,15 +156,28 @@ class HelpPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     /**
-     * Open a URL for the user
+     * Open a URL for the user.
      */
     private fun openURL(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(url)
+        )
+
         try {
+
             startActivity(intent)
+
         } catch (e: Exception) {
+
             e.printStackTrace()
-            Snackbar.make(requireView(), getString(R.string.snackbar_intent_failed), Snackbar.LENGTH_SHORT).show()
+
+            Snackbar.make(
+                requireView(),
+                getString(R.string.snackbar_intent_failed),
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 }
