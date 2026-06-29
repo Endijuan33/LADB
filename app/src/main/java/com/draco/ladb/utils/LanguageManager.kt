@@ -30,7 +30,7 @@ object LanguageManager {
     private val languages = listOf(
         AppLanguage("", R.string.language_system),
         AppLanguage("en", R.string.language_en),
-        AppLanguage("id", R.string.language_id),
+        AppLanguage("in", R.string.language_id),
         AppLanguage("fr", R.string.language_fr),
         AppLanguage("es", R.string.language_es),
         AppLanguage("pt", R.string.language_pt),
@@ -50,10 +50,13 @@ object LanguageManager {
             return ""
 
         val tag = locales.toLanguageTags()
+	    .substringBefore(',')
 
-        return tag.substringBefore(',')
+        return when (tag) {
+	    "id" -> "in"
+	    else -> tag
     }
-
+    }
     /**
      * Returns current selected language index.
      */
