@@ -1,0 +1,55 @@
+name: Create Debug Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Debug
+        run: ./gradlew assembleDebug
+
+      - name: Set environment variables
+        run: |
+          apk_path=$(find app/build/outputs/apk/debug/ -name "*.apk" | head -n 1)
+          echo "APK_PATH=$apk_path" >> $GITHUB_ENV
+
+          sha=$(sha256sum "$apk_path" | awk '{ print $1 }')
+          echo "APK_SHA256=$sha" >> $GITHUB_ENV
+
+      - name: Get apk info
+        id: apk-info
+        uses: hkusu/apk-info-action@v1
+        with:
+          apk-path: ${{ env.APK_PATH }}
+
+      - name: Upload binaries to a release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "APK SHA-256 Checksum: ${{ env.APK_SHA256 }}"
+          files: ${{ env.APK_PATH }}
+          tag_name: "v${{ steps.apk-info.outputs.version-name }}-${{ github.run_number }}"
+          make_latest: true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LADB-Debug
+          path: ${{ env.APK_PATH }}
