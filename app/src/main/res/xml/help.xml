@@ -30,6 +30,12 @@
             android:key="@string/startup_command_key"
             android:summary="@string/startup_command_summary"
             android:title="@string/startup_command_title" />
+        <Preference
+            android:icon="@drawable/ic_baseline_language_24"
+            android:key="@string/language_key"
+            android:summary="@string/language_summary"
+            android:title="@string/language_title" />    
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/troubleshooting">
         <Preference
