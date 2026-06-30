@@ -6,16 +6,15 @@ import android.net.NetworkCapabilities
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
 import android.util.Log
-import com.draco.ladb.utils.DnsDiscover.Companion.adbPort
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
-private const val TAG = "DNS"
+private const val TAG = "PAIR"
 
-class DnsDiscover private constructor(
+class PairDiscover private constructor(
     private val context: Context,
     private val nsdManager: NsdManager
 ) {
@@ -26,43 +25,33 @@ class DnsDiscover private constructor(
     private var pendingServices: MutableList<NsdServiceInfo> = Collections.synchronizedList(ArrayList())
 
     companion object {
-        private var instance: DnsDiscover? = null
-        var adbPort: Int? = null
+        private var instance: PairDiscover? = null
+        var pairPort: Int? = null
         var pendingResolves = AtomicBoolean(false)
         var aliveTime: Long? = null
 
-        fun getInstance(context: Context, nsdManager: NsdManager): DnsDiscover {
-            return instance ?: DnsDiscover(context, nsdManager).also { instance = it }
+        fun getInstance(context: Context, nsdManager: NsdManager): PairDiscover {
+            return instance ?: PairDiscover(context, nsdManager).also { instance = it }
         }
     }
 
     /**
-     * Start the scan for the best ADB port to connect to. Only needs to be started once.
+     * Start the scan for the best Wireless Debugging port to connect to. Only needs to be started once.
      */
-  fun scanAdbPorts() {
-    adbPort = null
-    bestExpirationTime = null
-    bestServiceName = null
-    pendingServices.clear()
-    pendingResolves.set(false)
-
-    aliveTime = System.currentTimeMillis()
-
-    if (started) {
-        try {
-            nsdManager.stopServiceDiscovery(discoveryListener)
-        } catch (_: Exception) {
+    fun scanPairPorts() {
+        if (started) {
+            Log.w(TAG, "Already started")
+            return
         }
+        started = true
+        aliveTime = System.currentTimeMillis()
+        nsdManager.discoverServices(
+            "_adb-tls-pairing._tcp",
+            NsdManager.PROTOCOL_DNS_SD,
+            discoveryListener
+        )
     }
 
-    started = true
-
-    nsdManager.discoverServices(
-        "_adb-tls-connect._tcp",
-        NsdManager.PROTOCOL_DNS_SD,
-        discoveryListener
-    )
-}
     /**
      * Returns the device's local IP address, or null if an error occurred.
      */
@@ -96,7 +85,7 @@ class DnsDiscover private constructor(
     }
 
     /**
-     * Determines if the service is the most recent to broadcast, and if so, sets it as the [adbPort].
+     * Determines if the service is the most recent to broadcast, and if so, sets it as the [pairPort].
      */
     private fun updateIfNewest(serviceInfo: NsdServiceInfo) {
         val port = serviceInfo.port
@@ -112,15 +101,15 @@ class DnsDiscover private constructor(
         }
 
         fun update() {
-            adbPort = port
+            pairPort = port
             bestExpirationTime = expirationTime
             bestServiceName = serviceName
-            Log.d(TAG, "Updated best match: $adbPort, $bestServiceName, $bestExpirationTime")
+            Log.d(TAG, "Updated best pairing port: $pairPort, $bestServiceName, $bestExpirationTime")
         }
 
         // If nothing set yet, be the first.
-        if (adbPort == null) {
-            Log.d(TAG, "ADB port not yet set, updating best match...")
+        if (pairPort == null) {
+            Log.d(TAG, "Pairing port not yet set, updating best match...")
             update()
             return
         }

@@ -23,8 +23,8 @@ import androidx.preference.PreferenceManager
 import com.draco.ladb.BuildConfig
 import com.draco.ladb.R
 import com.draco.ladb.databinding.ActivityMainBinding
-import com.draco.ladb.utils.DnsDiscover
 import com.draco.ladb.viewmodels.MainActivityViewModel
+import com.draco.ladb.utils.PairDiscover
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -145,6 +145,7 @@ class MainActivity : AppCompatActivity() {
             askToPair { thisPairSuccess ->
                 if (thisPairSuccess) {
                     viewModel.setPairedBefore(true)
+		    viewModel.dnsDiscover.scanAdbPorts()
                     viewModel.startADBServer()
                 } else {
                     /* Failed; try again! */
@@ -184,27 +185,12 @@ class MainActivity : AppCompatActivity() {
             .apply {
                 setOnShowListener {
                     getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-
-                        val port = DnsDiscover.adbPort?.toString()
-
-                        if (port == null) {
-                            Snackbar.make(
-                                binding.output,
-                                "Searching Wireless Debugging port...",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                            return@setOnClickListener
-                        }
-
-                        val code =
-                            findViewById<TextInputEditText>(R.id.code)!!
-                                .text
-                                .toString()
-
+                        val port = PairDiscover.pairPort?.toString() ?: ""
+                        val code = findViewById<TextInputEditText>(R.id.code)!!.text.toString()
                         dismiss()
 
                         lifecycleScope.launch(Dispatchers.IO) {
-                            viewModel.adb.debug("Trying to pair on port $port...")
+                            viewModel.adb.debug("Trying to pair...")
                             val success = viewModel.adb.pair(port, code)
                             callback?.invoke(success)
                         }

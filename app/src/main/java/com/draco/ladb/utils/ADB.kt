@@ -161,9 +161,13 @@ class ADB(private val context: Context) {
                 }
             }
 
-            val nowTime = System.currentTimeMillis()
-            val maxTimeoutTime = nowTime + 10.seconds.inWholeMilliseconds
-            val minDnsScanTime = (DnsDiscover.aliveTime ?: nowTime) + 3.seconds.inWholeMilliseconds
+            val maxTimeoutTime = 
+                System.currentTimeMillis() + 10.seconds.inWholeMilliseconds
+            val aliveTime =
+		DnsDiscover.aliveTime ?: System.currentTimeMillis()
+	    val minDnsScanTime = 
+		aliveTime + 3.seconds.inWholeMilliseconds
+
             while (true) {
                 val nowTime = System.currentTimeMillis()
                 val pendingResolves = DnsDiscover.pendingResolves.get()

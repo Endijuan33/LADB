@@ -14,6 +14,7 @@ import androidx.preference.PreferenceManager
 import com.draco.ladb.BuildConfig
 import com.draco.ladb.R
 import com.draco.ladb.utils.ADB
+import com.draco.ladb.utils.PairDiscover
 import com.draco.ladb.utils.DnsDiscover
 import com.github.javiersantos.piracychecker.PiracyChecker
 import com.github.javiersantos.piracychecker.piracyChecker
@@ -38,13 +39,18 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             application.applicationContext,
             application.applicationContext.getSystemService(Context.NSD_SERVICE) as NsdManager
         )
+    val pairDiscover =
+        PairDiscover.getInstance(
+             application.applicationContext,
+             application.applicationContext.getSystemService(Context.NSD_SERVICE) as NsdManager
+        )
 
     private val _viewModelHasStartedADB = MutableLiveData(false)
     val viewModelHasStartedADB: LiveData<Boolean> = _viewModelHasStartedADB
 
     init {
         startOutputThread()
-        dnsDiscover.scanAdbPorts()
+	pairDiscover.scanPairPorts()
     }
 
 
