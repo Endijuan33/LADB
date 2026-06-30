@@ -6,98 +6,103 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
           cache: gradle
 
-      - name: Grant execute permission
-        run: chmod +x gradlew
+      - uses: gradle/actions/setup-gradle@v4
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - run: chmod +x gradlew
 
-      - name: Build Debug APK
+      - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
 
       - name: Locate APK
+        id: apk
         run: |
           APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -n1)
-          echo "APK_PATH=$APK" >> $GITHUB_ENV
-          echo "APK_SHA256=$(sha256sum "$APK" | awk '{print $1}')" >> $GITHUB_ENV
 
-      - name: Read APK Information
-        id: apk
+          echo "apk=$APK" >> "$GITHUB_OUTPUT"
+
+          SHA=$(sha256sum "$APK" | awk '{print $1}')
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
+          SIZE=$(du -h "$APK" | cut -f1)
+          echo "size=$SIZE" >> "$GITHUB_OUTPUT"
+
+      - name: Read APK Info
+        id: info
         uses: hkusu/apk-info-action@v1
         with:
-          apk-path: ${{ env.APK_PATH }}
+          apk-path: ${{ steps.apk.outputs.apk }}
 
-      - name: Generate Changelog
-        id: changelog
-        run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-
-          if [ -z "$LAST_TAG" ]; then
-            LOG=$(git log --pretty=format:"- %s")
-          else
-            LOG=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s")
-          fi
-
-          {
-            echo "CHANGELOG<<EOF"
-            echo "$LOG"
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Delete old latest release
+      - name: Delete Older Releases
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          gh release list --limit 100 | while read tag rest
+          PREFIX="v${{ steps.info.outputs.version-name }}-"
+
+          gh api repos/${{ github.repository }}/releases --paginate \
+          --jq '.[] | select(.tag_name | startswith("'"$PREFIX"'")) | .tag_name' \
+          | while read TAG
           do
-            if [[ "$tag" == v${{ steps.apk.outputs.version-name }}-* ]]; then
-              gh release delete "$tag" --cleanup-tag -y || true
-            fi
+              echo "Deleting $TAG"
+              gh release delete "$TAG" --cleanup-tag -y || true
           done
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.apk.outputs.version-name }}-${{ github.run_number }}
-          name: LADB v${{ steps.apk.outputs.version-name }}-${{ github.run_number }}
-          files: ${{ env.APK_PATH }}
-          make_latest: true
+          tag_name: v${{ steps.info.outputs.version-name }}-${{ github.run_number }}
+
+          name: |
+            LADB v${{ steps.info.outputs.version-name }}-${{ github.run_number }}
+
+          files: |
+            ${{ steps.apk.outputs.apk }}
+
           generate_release_notes: true
+
+          append_body: true
+
+          make_latest: true
+
           body: |
             ## 📦 Build Information
 
-            **Version**
-            `${{ steps.apk.outputs.version-name }}`
+            | Item | Value |
+            |------|-------|
+            | Version | `${{ steps.info.outputs.version-name }}` |
+            | Build | `${{ github.run_number }}` |
+            | Branch | `${{ github.ref_name }}` |
+            | Commit | `${{ github.sha }}` |
+            | APK Size | `${{ steps.apk.outputs.size }}` |
+            | SHA-256 | `${{ steps.apk.outputs.sha }}` |
+            | Build Date | `${{ github.run_id }}` |
 
-            **Build**
-            `${{ github.run_number }}`
+            ---
+            Built automatically using GitHub Actions.
 
-            **Commit**
-            `${{ github.sha }}`
-
-            **SHA-256**
-
-            ```
-            ${{ env.APK_SHA256 }}
-            ```
-
-            ## 📝 Changes
-
-            ${{ steps.changelog.outputs.CHANGELOG }}
+      - name: Release Summary
+        run: |
+          echo "## 🚀 Release Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: ${{ steps.info.outputs.version-name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- SHA256: ${{ steps.apk.outputs.sha }}" >> $GITHUB_STEP_SUMMARY
