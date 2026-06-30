@@ -3,54 +3,101 @@ name: Create Debug Release
 on:
   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
+permissions:
+  contents: write
 
-      - name: Set up JDK 17
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: temurin
           java-version: 17
+          cache: gradle
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission
         run: chmod +x gradlew
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Debug
-        run: ./gradlew assembleDebug
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Set environment variables
+      - name: Locate APK
         run: |
-          apk_path=$(find app/build/outputs/apk/debug/ -name "*.apk" | head -n 1)
-          echo "APK_PATH=$apk_path" >> $GITHUB_ENV
-          sha=$(sha256sum "$apk_path" | awk '{ print $1 }')
-          echo "APK_SHA256=$sha" >> $GITHUB_ENV
+          APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -n1)
+          echo "APK_PATH=$APK" >> $GITHUB_ENV
+          echo "APK_SHA256=$(sha256sum "$APK" | awk '{print $1}')" >> $GITHUB_ENV
 
-      - name: Get apk info
-        id: apk-info
+      - name: Read APK Information
+        id: apk
         uses: hkusu/apk-info-action@v1
         with:
           apk-path: ${{ env.APK_PATH }}
 
-      - name: Upload binaries to a release
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LAST_TAG" ]; then
+            LOG=$(git log --pretty=format:"- %s")
+          else
+            LOG=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s")
+          fi
+
+          {
+            echo "CHANGELOG<<EOF"
+            echo "$LOG"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Delete old latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release list --limit 100 | while read tag rest
+          do
+            if [[ "$tag" == v${{ steps.apk.outputs.version-name }}-* ]]; then
+              gh release delete "$tag" --cleanup-tag -y || true
+            fi
+          done
+
+      - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.apk.outputs.version-name }}-${{ github.run_number }}
+          name: LADB v${{ steps.apk.outputs.version-name }}-${{ github.run_number }}
+          files: ${{ env.APK_PATH }}
+          make_latest: true
           generate_release_notes: true
           body: |
-            APK SHA-256 Checksum: ${{ env.APK_SHA256 }}
-          files: ${{ env.APK_PATH }}
-          tag_name: "v${{ steps.apk-info.outputs.version-name }}-${{ github.run_number }}"
-          make_latest: true
+            ## 📦 Build Information
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: LADB-Debug
-          path: ${{ env.APK_PATH }}
+            **Version**
+            `${{ steps.apk.outputs.version-name }}`
+
+            **Build**
+            `${{ github.run_number }}`
+
+            **Commit**
+            `${{ github.sha }}`
+
+            **SHA-256**
+
+            ```
+            ${{ env.APK_SHA256 }}
+            ```
+
+            ## 📝 Changes
+
+            ${{ steps.changelog.outputs.CHANGELOG }}

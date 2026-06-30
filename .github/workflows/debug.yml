@@ -2,52 +2,42 @@ name: Android CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: temurin
           java-version: 17
+          cache: gradle
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission
         run: chmod +x gradlew
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Debug
-        run: ./gradlew assembleDebug
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Set environment variables
-        run: |
-          apk_path=$(find app/build/outputs/apk/debug/ -name "*.apk" | head -n 1)
-          echo "APK_PATH=$apk_path" >> $GITHUB_ENV
-          sha=$(sha256sum "$apk_path" | awk '{ print $1 }')
-          echo "APK_SHA256=$sha" >> $GITHUB_ENV
-
-      - name: Get apk info
-        id: apk-info
-        uses: hkusu/apk-info-action@v1
+      - name: Upload Debug Artifact
+        uses: actions/upload-artifact@v4
         with:
-          apk-path: ${{ env.APK_PATH }}
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          body: |
-            APK SHA-256 Checksum: ${{ env.APK_SHA256 }}
-          files: ${{ env.APK_PATH }}
-          tag_name: "v${{ steps.apk-info.outputs.version-name }}-${{ github.run_number }}"
-          make_latest: true
+          name: LADB-Debug
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 30
