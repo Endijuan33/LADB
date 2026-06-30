@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } else {
+	    viewModel.dnsDiscover.scanAdbPorts()
             viewModel.startADBServer()
         }
     }
