@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                 binding.outputScrollview.fullScroll(ScrollView.FOCUS_DOWN)
                 binding.command.requestFocus()
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(binding.command, InputMethodManager.SHOW_FORCED)
+                imm.showSoftInput(binding.command, 0)
             }
         }
 
