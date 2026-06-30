@@ -171,7 +171,11 @@ class PairDiscover private constructor(
         val ipAddress = getLocalIpAddress()
         Log.d("IP ADDRESS", ipAddress ?: "N/A")
 
-        val discoveredAddress = serviceInfo.host.hostAddress
+        val discoveredAddress = 
+        serviceInfo.hostAddresses
+	    .firstOrNull()
+            ?.hostAddress
+
         if (ipAddress != null && discoveredAddress != ipAddress) {
             Log.d(TAG, "IP does not match device")
             return
