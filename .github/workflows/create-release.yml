@@ -1,14 +1,18 @@
 name: Create Debug Release
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: release
-  cancel-in-progress: false
+  group: release-main
+  cancel-in-progress: true
 
 jobs:
   release:
@@ -16,27 +20,33 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          fetch-tags: true
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java 17
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: "17"
           cache: gradle
 
-      - uses: gradle/actions/setup-gradle@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-      - run: chmod +x gradlew
+      - name: Grant Execute Permission
+        run: chmod +x gradlew
 
-      - name: Build APK
+      - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
       - name: Locate APK
         id: apk
+        shell: bash
         run: |
-          APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -n1)
+          APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
 
           echo "apk=$APK" >> "$GITHUB_OUTPUT"
 
@@ -46,41 +56,44 @@ jobs:
           SIZE=$(du -h "$APK" | cut -f1)
           echo "size=$SIZE" >> "$GITHUB_OUTPUT"
 
-      - name: Read APK Info
-        id: info
+      - name: Read APK Information
+        id: version
         uses: hkusu/apk-info-action@v1
         with:
           apk-path: ${{ steps.apk.outputs.apk }}
 
-      - name: Delete Older Releases
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Generate Tag
+        id: tag
         run: |
-          PREFIX="v${{ steps.info.outputs.version-name }}-"
+          echo "tag=v${{ steps.version.outputs.version-name }}-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
-          gh api repos/${{ github.repository }}/releases --paginate \
-          --jq '.[] | select(.tag_name | startswith("'"$PREFIX"'")) | .tag_name' \
+      - name: Delete Previous Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PREFIX="v${{ steps.version.outputs.version-name }}-"
+
+          gh api repos/${{ github.repository }}/releases \
+            --paginate \
+            --jq '.[] | select(.tag_name | startswith("'"$PREFIX"'")) | .tag_name' \
           | while read TAG
           do
-              echo "Deleting $TAG"
-              gh release delete "$TAG" --cleanup-tag -y || true
+            echo "Deleting $TAG"
+            gh release delete "$TAG" --cleanup-tag --yes || true
           done
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.info.outputs.version-name }}-${{ github.run_number }}
-
-          name: |
-            LADB v${{ steps.info.outputs.version-name }}-${{ github.run_number }}
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: LADB ${{ steps.tag.outputs.tag }}
 
           files: |
             ${{ steps.apk.outputs.apk }}
 
           generate_release_notes: true
-
           append_body: true
-
+          overwrite_files: true
           make_latest: true
 
           body: |
@@ -88,21 +101,35 @@ jobs:
 
             | Item | Value |
             |------|-------|
-            | Version | `${{ steps.info.outputs.version-name }}` |
+            | Version | `${{ steps.version.outputs.version-name }}` |
+            | Version Code | `${{ steps.version.outputs.version-code }}` |
             | Build | `${{ github.run_number }}` |
             | Branch | `${{ github.ref_name }}` |
             | Commit | `${{ github.sha }}` |
+            | Commit Author | `${{ github.actor }}` |
             | APK Size | `${{ steps.apk.outputs.size }}` |
             | SHA-256 | `${{ steps.apk.outputs.sha }}` |
-            | Build Date | `${{ github.run_id }}` |
+
+            ### Workflow
+
+            - Repository: `${{ github.repository }}`
+            - Workflow: `${{ github.workflow }}`
+            - Run Number: `${{ github.run_number }}`
+            - Run ID: `${{ github.run_id }}`
 
             ---
             Built automatically using GitHub Actions.
 
-      - name: Release Summary
+      - name: Job Summary
         run: |
-          echo "## 🚀 Release Published" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- Version: ${{ steps.info.outputs.version-name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Build: ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- SHA256: ${{ steps.apk.outputs.sha }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## 🚀 Release Published"
+            echo ""
+            echo "| Item | Value |"
+            echo "|------|-------|"
+            echo "| Version | ${{ steps.version.outputs.version-name }} |"
+            echo "| Build | ${{ github.run_number }} |"
+            echo "| APK Size | ${{ steps.apk.outputs.size }} |"
+            echo "| SHA-256 | \`${{ steps.apk.outputs.sha }}\` |"
+            echo "| Release | ${{ steps.tag.outputs.tag }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
