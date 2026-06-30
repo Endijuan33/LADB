@@ -39,12 +39,23 @@ class PairDiscover private constructor(
      * Start the scan for the best Wireless Debugging port to connect to. Only needs to be started once.
      */
     fun scanPairPorts() {
-        if (started) {
-            Log.w(TAG, "Already started")
-            return
-        }
-        started = true
+        pairPort = null
+        bestExpirationTime = null
+        bestServiceName = null
+        pendingServices.clear()
+        pendingResolves.set(false)
+
         aliveTime = System.currentTimeMillis()
+
+        if (started) {
+            try {
+                nsdManager.stopServiceDiscovery(discoveryListener)
+            } catch (_: Exception) {
+            }
+        }
+
+        started = true
+
         nsdManager.discoverServices(
             "_adb-tls-pairing._tcp",
             NsdManager.PROTOCOL_DNS_SD,
