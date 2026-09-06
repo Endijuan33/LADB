@@ -188,8 +188,8 @@ class DnsDiscover private constructor(
 	        ?.hostAddress
 
         if (ipAddress != null && discoveredAddress != ipAddress) {
-            Log.d(TAG, "IP does not match device")
-            return
+            Log.d(TAG, "IP does not match device, but not skipping...")
+            //return
         }
 
         if (serviceInfo.port == 0) {
@@ -221,7 +221,7 @@ class DnsDiscover private constructor(
                 handleResolvedService(serviceInfo)
 
                 // Remove service after it's been resolved.
-                pendingServices.removeAll { it -> it.serviceName == serviceInfo.serviceName }
+                pendingServices.removeAll { it.serviceName == serviceInfo.serviceName }
 
                 // If we're all done, let anyone waiting know.
                 if (pendingServices.isEmpty()) {
